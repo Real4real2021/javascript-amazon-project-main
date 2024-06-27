@@ -44,7 +44,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart show-class-text">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -59,15 +59,15 @@ const mainDivElement = document.querySelector('.products-grid');
 mainDivElement.innerHTML = innerHTML;
 
 const addToCartButton = document.querySelectorAll('.js-add-to-cart');
-const addedTextElement = document.querySelectorAll('.added-to-cart');
-// const quantitySelectorElement = document.querySelectorAll(`.js-quantity-selector-${product.id}`);
+const addedTextElement = document.querySelector('.show-class-text');
 let cartQuantityElement = document.querySelector('.cart-quantity');
 
-function updateCartQuantity() {
+function updateCartQuantity(productId) {
+  const quantitySelectorElement = document.querySelector(`.js-quantity-selector-${productId}`);
   let cartQuantity = 0;
 
     cart.forEach((cartItem) => {
-      cartQuantity += cartItem.quantity
+      cartQuantity += Number(quantitySelectorElement.value);
     });
     cartQuantityElement.innerHTML = cartQuantity
 }
@@ -76,9 +76,10 @@ addToCartButton.forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
     addToCart(productId); //pass it HERE as well
-    updateCartQuantity();
-    });
+    updateCartQuantity(productId);
 
+
+    });
 });
 
 /*Instead of increasing the cart quantity by 1, increase it by the number selected in the 
