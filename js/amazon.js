@@ -66,7 +66,7 @@ addToCartButton.forEach((button) => {
     let matchingItem; //saves the parameter passed in the forEach loop, so it can be used outside of its scope
 
     cart.forEach((item) => {
-      if(productId === item.productId){ //find out if product is already in the cart
+      if(productId === item.productId){ //find out if item is already in the cart
         matchingItem = item;  //save it into the matchingItem variable
       }
     });
@@ -79,6 +79,13 @@ addToCartButton.forEach((button) => {
         quantity: 1
       })
     }
-    console.log(cart);
+
+    let cartQuantity = 0;
+
+    cart.forEach((item) => {
+      cartQuantity += item.quantity
+    });
+    cartQuantityElement.innerHTML = cartQuantity
   });
+
 });
