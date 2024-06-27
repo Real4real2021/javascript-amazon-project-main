@@ -1,3 +1,5 @@
+import {cart} from '../data/cart.js';
+
 let innerHTML = '';
 
 products.forEach((product) => {
@@ -25,7 +27,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -57,6 +59,7 @@ mainDivElement.innerHTML = innerHTML;
 
 const addToCartButton = document.querySelectorAll('.js-add-to-cart');
 const addedTextElement = document.querySelectorAll('.added-to-cart');
+// const quantitySelectorElement = document.querySelectorAll(`.js-quantity-selector-${product.id}`);
 let cartQuantityElement = document.querySelector('.cart-quantity');
 
 addToCartButton.forEach((button) => {
@@ -86,6 +89,12 @@ addToCartButton.forEach((button) => {
       cartQuantity += item.quantity
     });
     cartQuantityElement.innerHTML = cartQuantity
+
+  
   });
 
 });
+
+/*Instead of increasing the cart quantity by 1, increase it by the number selected in the 
+quantity selector element. get it into the javascript using document.querySelectorAll(`js-quantity-selector-${product.id}`)
+for the math to work out, use Number() to convert the string into a number to update the cart quantity element in the HTML*/
