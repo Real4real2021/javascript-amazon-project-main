@@ -1,4 +1,4 @@
-import {cart} from '../data/cart.js';
+import {cart, addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 
 let innerHTML = '';
@@ -63,36 +63,21 @@ const addedTextElement = document.querySelectorAll('.added-to-cart');
 // const quantitySelectorElement = document.querySelectorAll(`.js-quantity-selector-${product.id}`);
 let cartQuantityElement = document.querySelector('.cart-quantity');
 
+function updateCartQuantity() {
+  let cartQuantity = 0;
+
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity
+    });
+    cartQuantityElement.innerHTML = cartQuantity
+}
+
 addToCartButton.forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
-
-    let matchingItem; //saves the parameter passed in the forEach loop, so it can be used outside of its scope
-
-    cart.forEach((item) => {
-      if(productId === item.productId){ //find out if item is already in the cart
-        matchingItem = item;  //save it into the matchingItem variable
-      }
+    addToCart(productId); //pass it HERE as well
+    updateCartQuantity();
     });
-    
-    if(matchingItem){ //if true
-      matchingItem.quantity ++;
-    }else{ 
-      cart.push({
-        productId: productId,
-        quantity: 1
-      })
-    }
-
-    let cartQuantity = 0;
-
-    cart.forEach((item) => {
-      cartQuantity += item.quantity
-    });
-    cartQuantityElement.innerHTML = cartQuantity
-
-  
-  });
 
 });
 
