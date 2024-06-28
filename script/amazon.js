@@ -1,7 +1,7 @@
 import {cart, addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 
-let innerHTML = '';
+export let innerHTML = '';
 
 products.forEach((product) => {
   innerHTML += `
@@ -61,13 +61,13 @@ mainDivElement.innerHTML = innerHTML;
 const addToCartButton = document.querySelectorAll('.js-add-to-cart');
 const addedTextElement = document.querySelector('.show-class-text');
 let cartQuantityElement = document.querySelector('.cart-quantity');
+export let cartQuantity = 0;
 
 function updateCartQuantity(productId) {
   const quantitySelectorElement = document.querySelector(`.js-quantity-selector-${productId}`);
-  let cartQuantity = 0;
 
     cart.forEach((cartItem) => {
-      cartQuantity += Number(quantitySelectorElement.value);
+      cartQuantity += Number(cartItem.quantity);
     });
     cartQuantityElement.innerHTML = cartQuantity
 }
@@ -77,8 +77,6 @@ addToCartButton.forEach((button) => {
     const productId = button.dataset.productId;
     addToCart(productId); //pass it HERE as well
     updateCartQuantity(productId);
-
-
     });
 });
 

@@ -1,10 +1,18 @@
-export const cart = [];
+export const cart = [{
+  id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+  quantity: 2
+},{
+  id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+  quantity: 1
+}];
+
+let selectorQuantity = '';
 
 export function addToCart(productId) { //pass productId as a parameter HERE!
     let matchingItem; //saves the parameter passed in the forEach loop, so it can be used outside of its scope
     const quantitySelectorElement = document.querySelector(`.js-quantity-selector-${productId}`);
 
-    const selectorQuantity =  quantitySelectorElement.value;
+    selectorQuantity =  quantitySelectorElement.value;
   
     cart.forEach((cartItem) => {
       if(productId === cartItem.productId){ //find out if item is already in the cart
@@ -20,4 +28,5 @@ export function addToCart(productId) { //pass productId as a parameter HERE!
         quantity: Number(selectorQuantity)
       })
     }
+    console.log(cart);
   }
