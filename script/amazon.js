@@ -3,7 +3,6 @@ import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 
 export let innerHTML = '';
-console.log(innerHTML);
 
 products.forEach((product) => {
   innerHTML += `
@@ -58,7 +57,6 @@ products.forEach((product) => {
 });
 
 const mainDivElement = document.querySelector('.products-grid');
-console.log(innerHTML);
 mainDivElement.innerHTML = innerHTML;
 
 const addToCartButton = document.querySelectorAll('.js-add-to-cart');
@@ -68,7 +66,7 @@ export let cartQuantity = 0;
 
 function updateCartQuantity(productId) {
   const quantitySelectorElement = document.querySelector(`.js-quantity-selector-${productId}`);
-
+  let cartQuantity = 0;
     cart.forEach((cartItem) => {
       cartQuantity += Number(cartItem.quantity);
     });

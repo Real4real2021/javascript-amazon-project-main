@@ -1,12 +1,21 @@
 import {products} from './products.js';
 
-export let cart = [{
-  id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-  quantity: 2
-},{
-  id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-  quantity: 1
-}];
+export let cart = JSON.parse(localStorage.getItem('cart'));
+
+if (!cart) {
+  cart = [{
+    id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+    quantity: 2
+  },{
+    id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+    quantity: 1
+  }];
+}
+
+function saveToStorage() {
+  localStorage.setItem('cart', JSON.stringify(cart))  //Name of what we want to save, data that we want to save
+    //(can only save strings to convert using JSON.stringify)
+}
 
 let selectorQuantity = '';
 
@@ -17,29 +26,34 @@ export function addToCart(productId) { //pass productId as a parameter HERE!
     selectorQuantity =  quantitySelectorElement.value;
   
     cart.forEach((cartItem) => {
-      if(productId === cartItem.productId){ //find out if item is already in the cart
+      if(productId === cartItem.id){ //find out if item is already in the cart
         matchingItem = cartItem;  //save it into the matchingItem variable
       }
     });
     
     if(matchingItem){ //if true
       matchingItem.quantity += Number(selectorQuantity);
+      console.log(matchingItem.quantity);
     }else{ 
       cart.push({
-        productId: productId,
+        id: productId,
         quantity: Number(selectorQuantity)
       })
     }
-    console.log(cart);
+    saveToStorage();
+
+    console.log(cart)
   }
 
 export function deleteFromCart(productId) {
-  let newCart =[];
+  let newCart =[]; //create a new cart array
 
   cart.forEach((cartItem) => {
-    if(cartItem.id !== productId){
-      newCart.push(cartItem);
+    if(cartItem.id !== productId){ //check that the id of the original cart item is not the same as the productId being passed to the function
+      newCart.push(cartItem); //if they are not the same, add that item to the new cart
     }
   });
-  cart = newCart;
+  cart = newCart; // overwrite the previous cart array
+
+  saveToStorage();
 }

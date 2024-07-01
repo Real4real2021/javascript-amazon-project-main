@@ -9,21 +9,21 @@ import { formatCurrency } from "./utils/money.js";
 // returnToHomeElement.innerHTML = cartQuantity
 
 let cartSummaryHTML = '';
-
 cart.forEach((cartItem) => {
   const productId = cartItem.id; //iterate cart and get cartItem Id
   
   let matchingProduct;
-
+  
   products.forEach((product) => {
     if (product.id === productId) {
       //check if cartItem Id is the same as productId
-      matchingProduct = product; //if so, matching product equals product
+      matchingProduct = product; //if so, matching product equals product    
     }
   });
   cartSummaryHTML += `
   <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
-    <div class="delivery-date">
+      <div class="delivery-date">
+
       Delivery date: Tuesday, June 21
     </div>
 
@@ -103,21 +103,14 @@ let orderSummaryElement = document.querySelector(".order-summary");
 orderSummaryElement.innerHTML = cartSummaryHTML;
 
 const deleteLink = document.querySelectorAll('.js-delete-link');
-
-// deleteLink.forEach((link) => {  
-//   link.addEventListener('click', () => {
-//     const productId = link.dataset.productId;
-//     console.log(productId);
-//   })
-// })
-
 deleteLink.forEach((link) => {
   link.addEventListener('click', () => {
     const productId = link.dataset.productId;
     deleteFromCart(productId);
 
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+    const container = document.querySelector(`.js-cart-item-container-${productId}`); //use the DOM to get the element using the class we created, substitute product ID
 
-    container.remove();
+    container.remove(); //remove that item from the container element
   })
 })
+
