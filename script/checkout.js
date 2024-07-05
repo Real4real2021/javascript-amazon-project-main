@@ -1,30 +1,44 @@
+//named exports
 import { cart, deleteFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
-// import { cartQuantity } from "../script/amazon.js";
-// import { innerHTML } from "../script/amazon.js";
-// import { selecQuantity } from "../data/cart.js"
+import { deliveryOption } from "../data/deliveryOptons.js";
+// ESM external library does not require loading via script tags in HTML file
+import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; //default export || check utils/money.js
 
-// let returnToHomeElement = document.querySelector('.return-to-home-link');
-// returnToHomeElement.innerHTML = cartQuantity
-
-let cartSummaryHTML = '';
+let matchingProduct;
+let cartSummaryHTML = "";
 cart.forEach((cartItem) => {
   const productId = cartItem.id; //iterate cart and get cartItem Id
-  
-  let matchingProduct;
-  
+
   products.forEach((product) => {
     if (product.id === productId) {
       //check if cartItem Id is the same as productId
-      matchingProduct = product; //if so, matching product equals product    
+      matchingProduct = product; //if so, matching product equals product
     }
   });
+
+  const deliveryOptionId = cartItem.deliveryOptionId; //get the 'deliveryOptionId' out of the cart
+
+  let deliveryOptions;
+
+  deliveryOption.forEach((option) => {
+    //forEach through the deliveryoptions. See if the deliveryOption.id
+    //is the same as (===) the deiveryOptionId from the cart. If it is, save it to the deliveryOption array.
+    if (option.id === deliveryOptionId) {
+      deliveryOptions = option;
+    }
+  });
+
+  const today = dayjs();
+  let deliveryDate = today.add(deliveryOptions.deliverDays, "days");
+  const dateString = deliveryDate.format("dddd, MMMM D");
+
   cartSummaryHTML += `
   <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
       <div class="delivery-date">
 
-      Delivery date: Tuesday, June 21
+      Delivery date: ${dateString}
     </div>
 
     <div class="cart-item-details-grid">
@@ -44,8 +58,12 @@ cart.forEach((cartItem) => {
           </span>
           <span class="update-quantity-link link-primary">
             Update
+              <input class="quantity-input">
+              <span class="save-quantity-link link-primary">Save</span>
           </span>
-          <span class="delete-quantity-link js-delete-link link-primary" data-product-id="${matchingProduct.id}">
+          <span class="delete-quantity-link js-delete-link link-primary" data-product-id="${
+            matchingProduct.id
+          }">
             Delete
           </span>
         </div>
@@ -54,63 +72,63 @@ cart.forEach((cartItem) => {
       <div class="delivery-options">
         <div class="delivery-options-title">
           Choose a delivery option:
-        </div>
-        <div class="delivery-option">
-          <input type="radio" checked
-            class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
-          <div>
-            <div class="delivery-option-date">
-              Tuesday, June 21
-            </div>
-            <div class="delivery-option-price">
-              FREE Shipping
-            </div>
-          </div>
-        </div>
-        <div class="delivery-option">
-          <input type="radio"
-            class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
-          <div>
-            <div class="delivery-option-date">
-              Wednesday, June 15
-            </div>
-            <div class="delivery-option-price">
-              $4.99 - Shipping
-            </div>
-          </div>
-        </div>
-        <div class="delivery-option">
-          <input type="radio"
-            class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
-          <div>
-            <div class="delivery-option-date">
-              Monday, June 13
-            </div>
-            <div class="delivery-option-price">
-              $9.99 - Shipping
-            </div>
-          </div>
-        </div>
+         ${deliveryOptionsHTML(cartItem)} 
+        </div>    
       </div>
     </div>
   </div>
   `;
 });
+
+function deliveryOptionsHTML(cartItem) {
+  //pass matchingProduct if it isnt declared globaly where ever deliveryOptionsHTML is called
+  let html = "";
+
+  deliveryOption.forEach((option) => {
+    const today = dayjs();
+    let deliveryDate = today.add(option.deliverDays, "days");
+    const dateString = deliveryDate.format("dddd, MMMM D");
+
+    const priceString =
+      option.priceCents === 0
+        ? `FREE`
+        : `${formatCurrency(Number(option.priceCents))}`;
+
+    const isChecked = option.id === cartItem.deliveryOptionId;
+
+    html += `
+      <div class="delivery-option">
+            <input type="radio"
+            ${isChecked ? "checked" : ""}
+              class="delivery-option-input"
+             name="delivery-option-${matchingProduct.id}">
+            <div>
+              <div class="delivery-option-date">
+              ${dateString}
+              </div>
+              <div class="delivery-option-price">
+                $${priceString} - Shipping
+              </div>
+            </div>
+          </div>
+    `;
+  });
+  return html;
+}
+
 let orderSummaryElement = document.querySelector(".order-summary");
 orderSummaryElement.innerHTML = cartSummaryHTML;
 
-const deleteLink = document.querySelectorAll('.js-delete-link');
+const deleteLink = document.querySelectorAll(".js-delete-link");
 deleteLink.forEach((link) => {
-  link.addEventListener('click', () => {
+  link.addEventListener("click", () => {
     const productId = link.dataset.productId;
     deleteFromCart(productId);
 
-    const container = document.querySelector(`.js-cart-item-container-${productId}`); //use the DOM to get the element using the class we created, substitute product ID
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    ); //use the DOM to get the element using the class we created, substitute product ID
 
     container.remove(); //remove that item from the container element
-  })
-})
-
+  });
+});
