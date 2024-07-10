@@ -73,9 +73,9 @@ function updateCartQuantity(productId) {
     cartQuantityElement.innerHTML = cartQuantity
 }
 
-addToCartButton.forEach((button) => {
+addToCartButton.forEach((button) => { //add the following functionality to each 'add to cart button'
   button.addEventListener('click', () => {
-    const productId = button.dataset.productId;
+    const productId = button.dataset.productId; //retrive the productId using the dataset attribute 
     addToCart(productId); //pass it HERE as well
     updateCartQuantity(productId);
     });
@@ -84,3 +84,7 @@ addToCartButton.forEach((button) => {
 /*Instead of increasing the cart quantity by 1, increase it by the number selected in the 
 quantity selector element. get it into the javascript using document.querySelectorAll(`js-quantity-selector-${product.id}`)
 for the math to work out, use Number() to convert the string into a number to update the cart quantity element in the HTML*/
+
+/*Data attributes are ideal for storing custom data associated with an element that doesn't necessarily affect its presentation */
+
+/*ids are used when targeting a specific element */

@@ -1,29 +1,30 @@
 //named exports
-import { cart, deleteFromCart } from "../data/cart.js";
+import { cart, deleteFromCart, upadateDeliveryOption } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import { deliveryOption } from "../data/deliveryOptons.js";
 // ESM external library does not require loading via script tags in HTML file
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; //default export || check utils/money.js
 
-let matchingProduct;
 let cartSummaryHTML = "";
+
 cart.forEach((cartItem) => {
+  let matchingProduct;
   const productId = cartItem.id; //iterate cart and get cartItem Id
 
   products.forEach((product) => {
     if (product.id === productId) {
       //check if cartItem Id is the same as productId
       matchingProduct = product; //if so, matching product equals product
-    }
+    };
   });
 
   const deliveryOptionId = cartItem.deliveryOptionId; //get the 'deliveryOptionId' out of the cart
 
-  let deliveryOptions;
+  let deliveryOptions; 
 
   deliveryOption.forEach((option) => {
-    //forEach through the deliveryoptions. See if the deliveryOption.id
+    //forEach through the deliveryOption. See if the option.id
     //is the same as (===) the deiveryOptionId from the cart. If it is, save it to the deliveryOption array.
     if (option.id === deliveryOptionId) {
       deliveryOptions = option;
@@ -61,7 +62,7 @@ cart.forEach((cartItem) => {
               <input class="quantity-input">
               <span class="save-quantity-link link-primary">Save</span>
           </span>
-          <span class="delete-quantity-link js-delete-link link-primary" data-product-id="${
+          <span class="del;ete-quantity-link js-delete-link link-primary" data-product-id="${
             matchingProduct.id
           }">
             Delete
@@ -72,7 +73,7 @@ cart.forEach((cartItem) => {
       <div class="delivery-options">
         <div class="delivery-options-title">
           Choose a delivery option:
-         ${deliveryOptionsHTML(cartItem)} 
+         ${deliveryOptionsHTML(matchingProduct, cartItem)} 
         </div>    
       </div>
     </div>
@@ -80,7 +81,7 @@ cart.forEach((cartItem) => {
   `;
 });
 
-function deliveryOptionsHTML(cartItem) {
+function deliveryOptionsHTML(matchingProduct, cartItem) {
   //pass matchingProduct if it isnt declared globaly where ever deliveryOptionsHTML is called
   let html = "";
 
@@ -97,7 +98,9 @@ function deliveryOptionsHTML(cartItem) {
     const isChecked = option.id === cartItem.deliveryOptionId;
 
     html += `
-      <div class="delivery-option">
+      <div class="delivery-option"
+      data-product-id="${matchingProduct.id}"
+      data-delivery-option-id="${deliveryOption.id}">
             <input type="radio"
             ${isChecked ? "checked" : ""}
               class="delivery-option-input"
@@ -116,10 +119,10 @@ function deliveryOptionsHTML(cartItem) {
   return html;
 }
 
-let orderSummaryElement = document.querySelector(".order-summary");
+let orderSummaryElement = document.querySelector('.order-summary');
 orderSummaryElement.innerHTML = cartSummaryHTML;
 
-const deleteLink = document.querySelectorAll(".js-delete-link");
+const deleteLink = document.querySelectorAll('.js-delete-link');
 deleteLink.forEach((link) => {
   link.addEventListener("click", () => {
     const productId = link.dataset.productId;
@@ -132,3 +135,11 @@ deleteLink.forEach((link) => {
     container.remove(); //remove that item from the container element
   });
 });
+
+document.querySelectorAll('.delivery-option')
+  .forEach((element) => {
+    element.addEventListener('click', () => {
+      const {productId, deliveryOptionId} = element.dataset;
+      upadateDeliveryOption(productId, deliveryOptionId);
+    })
+  });
