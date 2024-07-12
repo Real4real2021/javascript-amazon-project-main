@@ -20,7 +20,6 @@ function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart))  //Name of what we want to save, data that we want to save
     //(can only save strings to convert using JSON.stringify)
 }
-
 let selectorQuantity = '';
 
 export function addToCart(productId) { //pass productId as a parameter HERE!
@@ -46,7 +45,7 @@ export function addToCart(productId) { //pass productId as a parameter HERE!
       })
     }
     saveToStorage();
-
+    console.log(productId);
     console.log(cart)
   }
 
@@ -70,10 +69,10 @@ export function upadateDeliveryOption (productId, deliveryOptionId) {
     if (productId === cartItem.id) {
       //find out if item is already in the cart
       matchingItem = cartItem; //save it into the matchingItem variable
-      console.log(matchingItem);
+    }else{
+      console.log(productId);
+      console.log('Item does not exist in the cart!');
     }
   });
-  deliveryOptionId = matchingItem.deliveryOptionId;
-  console.log(deliveryOptionId)
   saveToStorage();
 }
