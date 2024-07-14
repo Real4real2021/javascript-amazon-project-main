@@ -55,6 +55,7 @@ export function deleteFromCart(productId) {
   cart.forEach((cartItem) => {
     if(cartItem.id !== productId){ //check that the id of the original cart item is not the same as the productId being passed to the function
       newCart.push(cartItem); //if they are not the same, add that item to the new cart
+      console.log(productId);
     }
   });
   cart = newCart; // overwrite the previous cart array
@@ -71,8 +72,8 @@ export function upadateDeliveryOption (productId, deliveryOptionId) {
       matchingItem = cartItem; //save it into the matchingItem variable
     }else{
       console.log(productId);
-      console.log('Item does not exist in the cart!');
+      console.log('ProdcutId is undefined!');
     }
   });
   saveToStorage();
-}
+};

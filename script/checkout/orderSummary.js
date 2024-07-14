@@ -1,6 +1,6 @@
 //named exports
 import { cart, deleteFromCart, upadateDeliveryOption } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { deliveryOption } from "../../data/deliveryOptons.js";
 // ESM external library does not require loading via script tags in HTML file
@@ -11,15 +11,10 @@ export function renderOrderSummary() {
     let cartSummaryHTML = "";
     
     cart.forEach((cartItem) => {
-      let matchingProduct;
       const productId = cartItem.id; //iterate cart and get cartItem Id
-    
-      products.forEach((product) => {
-        if (product.id === productId) {
-          //check if cartItem Id is the same as productId
-          matchingProduct = product; //if so, matching product equals product
-        };
-      });
+      
+      const matchingProduct = getProduct(productId);
+         
     
       const deliveryOptionId = cartItem.deliveryOptionId; //get the 'deliveryOptionId' out of the cart
     

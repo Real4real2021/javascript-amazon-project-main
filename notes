@@ -1,0 +1,19 @@
+MAIN IDEA OF JAVASCRIPT
+
+1. Save the data (Model in Model View Controller )
+2. Generate the HTML (View in Model-View-Contoller)
+3. Make it interactive
+
+---------------------------------------------------------------
+
+find out why the productId(in cart.js) is undefined.
+
+Seperate the order summary and payment summary into differnt files. create functions to render each summary and call them in checkout.js
+
+In the payment summary file, generate the payment summary:
+
+1. loop through the create
+2. For each product, price * qunatity
+3. Add everything together
+
+

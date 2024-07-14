@@ -1,3 +1,15 @@
+export function getProduct(productId) {
+  let matchingProduct;
+    
+      products.forEach((product) => {
+        if (product.id === productId) {
+          //check if cartItem Id is the same as productId
+          matchingProduct = product; //if so, matching product equals product
+        };
+      });       
+      return matchingProduct;
+}
+
 //Normalize the data for the products
 export const products = [
   {
