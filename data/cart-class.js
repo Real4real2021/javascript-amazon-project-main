@@ -3,19 +3,22 @@
 
 //Class is an object generator, 
 /**Classes allow use of a constructor-lets us put setup code inside the class */
+
 class Cart {
+    //public property
     cartItems;
-    localStorageKey;
+    //private property
+    #localStorageKey;
 
     //When an object is generated, the constructor is run automatically
     //method hAs to be named consturctor
     constructor(localStorageKey){
-        this.localStorageKey = localStorageKey;
-        this.loadFromStorage();
+        this.#localStorageKey = localStorageKey;
+        this.#loadFromStorage();
     }
 
-    loadFromStorage() {
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+    #loadFromStorage() {
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
     
         if (!this.cartItems) {
           this.cartItems = [
@@ -34,7 +37,7 @@ class Cart {
     }
 
     saveToStorage() {
-        localStorage.setItem(this.localStorageKey), JSON.stringify(this.cartItems); //Name of what we want to save, data that we want to save
+        localStorage.setItem(this.#localStorageKey), JSON.stringify(this.cartItems); //Name of what we want to save, data that we want to save
         //(can only save strings to convert using JSON.stringify)
     }
     
@@ -104,7 +107,6 @@ class Cart {
 
 const cart = new Cart('cart-oop');
 const businessCart = new Cart('cart-business');
-
 
 
 console.log(cart);
