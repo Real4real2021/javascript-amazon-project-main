@@ -35,7 +35,29 @@ class Product {
   getPrice() {
     return `$${formatCurrency(this.priceCents)}`
   }
+
+  extraInfoHTML(){
+    return '';
+  }
 }
+
+class Clothing extends Product{ //'extends' lets the new 'Clothing' class inheriate all the properties and methods in the 'Products' class
+  sizeChartLink;
+
+  constructor(productDetails) {
+    super(productDetails); //calls the consturtor of the parent class in this case "Products"
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+  extraInfoHTML(){
+    return `
+    <a href="${this.sizeChartLink}" target="_blank">
+      Size chart
+    </a>
+    `;
+  }
+}
+
+//Use inheritance when one class is a more specific type of another class, lets us reuse code between classes
 
 const product1 = new Product( 
   {
@@ -714,6 +736,9 @@ export const products = [
     ]
   }
 ].map((productDetails) => {
+  if(productDetails.type === 'clothing'){
+    return new Clothing(productDetails);
+  }
   return new Product(productDetails);
 });
 

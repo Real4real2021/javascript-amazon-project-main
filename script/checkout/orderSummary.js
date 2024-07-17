@@ -14,7 +14,8 @@ export function renderOrderSummary() {
       const productId = cartItem.id; //iterate cart and get cartItem Id
       
       const matchingProduct = getProduct(productId);
-         
+
+      
     
       const deliveryOptionId = cartItem.deliveryOptionId; //get the 'deliveryOptionId' out of the cart
     
@@ -59,7 +60,7 @@ export function renderOrderSummary() {
                   <input class="quantity-input">
                   <span class="save-quantity-link link-primary">Save</span>
               </span>
-              <span class="del;ete-quantity-link js-delete-link link-primary" data-product-id="${
+              <span class="delete-quantity-link js-delete-link link-primary" data-product-id="${
                 matchingProduct.id
               }">
                 Delete
