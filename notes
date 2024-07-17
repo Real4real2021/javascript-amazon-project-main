@@ -16,4 +16,23 @@ In the payment summary file, generate the payment summary:
 2. For each product, price * qunatity
 3. Add everything together
 
+--------"THIS" IN OBJECT-ORIENTED-PROGRAMMING-------
+
+const object3 ={
+    method() {
+        console.log(this);          1.Inside a method, "this" points to the outer object
+    }
+};
+
+function logThis() {
+    console.log(this);              2.Inside a function, this = undefined
+};
+logThis.call('hello');     =>       But we can change it
+
+console.log(this);
+
+[1, 2, 3].forEach(() => {
+    console.log(this);              3.Arrow Functions, do not change the value of "this"
+});
+
 
